@@ -5,6 +5,29 @@ abstract class AppThemeManager{
   static ThemeData lightTheme = ThemeData(
     scaffoldBackgroundColor: Colors.white,
     primaryColor: ColorPallette.primaryColor,
+    appBarTheme: AppBarTheme(
+      centerTitle: true,
+      backgroundColor: Colors.transparent,
+      iconTheme: IconThemeData(color: Colors.black),
+      titleTextStyle: TextStyle(
+        fontFamily: "Inter",
+        fontSize: 24,
+        fontWeight: FontWeight.w500,
+        color: ColorPallette.generalTextColor
+      )
+    ),
+    bottomNavigationBarTheme: BottomNavigationBarThemeData(
+      type: BottomNavigationBarType.fixed,
+          backgroundColor: ColorPallette.primaryColor,
+      selectedItemColor: Colors.white,
+      selectedIconTheme: IconThemeData(
+        color: Colors.white
+      ),
+        unselectedItemColor: Colors.white,
+        unselectedIconTheme: IconThemeData(
+            color: Colors.white
+        )
+    ),
     textTheme: TextTheme(
       bodyLarge: TextStyle(
         fontSize: 20,

@@ -1,4 +1,5 @@
 import 'package:evently_app/core/constants/assets.dart';
+import 'package:evently_app/core/routes/page_route_name.dart';
 import 'package:evently_app/core/theme/color_pallette.dart';
 import 'package:evently_app/core/widgets/custom_button.dart';
 import 'package:evently_app/core/widgets/custom_text_form_field.dart';
@@ -62,7 +63,10 @@ class LoginView extends StatelessWidget {
             ),
             SizedBox(height: 24),
             CustomButtonWidget(
-              onTap: () {},
+              onTap: () {
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                PageRouteName.layout, (route)=> false);
+              },
               child: Text("Login", style: theme.textTheme.bodyLarge),
             ),
             SizedBox(height: 24),
