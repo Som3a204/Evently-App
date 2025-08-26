@@ -1,5 +1,7 @@
 import 'package:evently_app/core/theme/color_pallette.dart';
+import 'package:evently_app/core/utils/firebase_firestore_utils.dart';
 import 'package:evently_app/models/category_data.dart';
+import 'package:evently_app/models/event_data.dart';
 import 'package:evently_app/modules/layout/home/widgets/event_card_item.dart';
 import 'package:evently_app/modules/layout/home/widgets/tab_bar_item_widget.dart';
 import 'package:flutter/material.dart';
@@ -15,11 +17,60 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   List<CategoryData> categoriesDataList = [
-    CategoryData(name: "Sports", icon: Icons.sports_soccer),
-    CategoryData(name: "Birthday", icon: Icons.sports_soccer),
-    CategoryData(name: "Book Club", icon: Icons.menu_book),
-    CategoryData(name: "Meeting", icon: Icons.meeting_room_outlined),
-    CategoryData(name: "Exhibition", icon: Icons.sports_soccer),
+    CategoryData(
+      id: "sports",
+      image: Assets.sportsImg,
+      name: "Sports",
+      icon: Icons.sports_soccer,
+    ),
+    CategoryData(
+      id: "book_club",
+      image: Assets.bookClubImg,
+      name: "Book Club",
+      icon: Icons.music_note,
+    ),
+    CategoryData(
+      id: "birthday",
+      image: Assets.birthdayImg,
+      name: "Birthday",
+      icon: Icons.cake_outlined,
+    ),
+    CategoryData(
+      id: "meeting",
+      image: Assets.meetingImg,
+      name: "Meeting",
+      icon: Icons.art_track,
+    ),
+    CategoryData(
+      id: "gaming",
+      image: Assets.gamingImg,
+      name: "Gaming",
+      icon: Icons.theater_comedy,
+    ),
+    CategoryData(
+      id: "eating",
+      image: Assets.eatingImg,
+      name: "Eating",
+      icon: Icons.fastfood_outlined,
+    ),
+    CategoryData(
+      id: "holiday",
+      image: Assets.holidayImg,
+      name: "Holiday",
+      icon: Icons.music_note,
+    ),
+    CategoryData(
+      id: "exhibition",
+      image: Assets.exhibitionImg,
+      name: "Exhibition",
+      icon: Icons.slideshow,
+    ),
+    CategoryData(
+      id: "workshop",
+      image: Assets.workshopImg,
+      name: "Workshop ",
+      icon: Icons.work_history_outlined,
+    ),
   ];
   int selectedTabIndex = 0;
   @override
@@ -36,10 +87,13 @@ class _HomeViewState extends State<HomeView> {
               top: mediaQuery.size.height * 0.05,
               bottom: 25,
             ),
-            decoration: BoxDecoration(color: theme.primaryColor, borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(24),
-              bottomRight: Radius.circular(24),
-            )),
+            decoration: BoxDecoration(
+              color: theme.primaryColor,
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(24),
+                bottomRight: Radius.circular(24),
+              ),
+            ),
             child: Column(
               children: [
                 Padding(
@@ -124,24 +178,88 @@ class _HomeViewState extends State<HomeView> {
                     },
                     tabs:
                         categoriesDataList.map((data) {
-                          return TabBarItemWidget(categoryData: data,
-                            isSelected: selectedTabIndex == categoriesDataList.indexOf(data),);
+                          return TabBarItemWidget(
+                            categoryData: data,
+                            isSelected:
+                                selectedTabIndex ==
+                                categoriesDataList.indexOf(data),
+                          );
                         }).toList(),
                   ),
                 ),
               ],
             ),
           ),
-          ListView.separated(
-            shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              itemBuilder: (context,index){
-                return EventCardItem();
-              },
-              separatorBuilder: (context,index) {
-                return SizedBox(height: 10);
-              },
-              itemCount: 10)
+
+          StreamBuilder(
+            stream: FirebaseFirestoreUtils.getStreamEventTasksList(
+              categoryId: categoriesDataList[selectedTabIndex].id,
+            ),
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                return Center(
+                  child: Text(
+                    snapshot.error.toString(),
+                    style: theme.textTheme.bodyLarge?.copyWith(
+                      color: Colors.black,
+                    ),
+                  ),
+                );
+              }
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(child: CircularProgressIndicator());
+              }
+
+              List<EventData> eventDataList =
+                  snapshot.data!.docs.map((element) {
+                    return element.data();
+                  }).toList();
+
+              return eventDataList.isEmpty ?
+              Center(child: Text("No Data"),): Expanded(
+                child: ListView.separated(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    return EventCardItem(eventData: eventDataList[index]);
+                  },
+                  separatorBuilder: (context, index) {
+                    return SizedBox(height: 10);
+                  },
+                  itemCount: eventDataList.length,
+                ),
+              );
+            },
+          ),
+
+          /*FutureBuilder<List<EventData>>(future: FirebaseFirestoreUtils.getEventTasksList(),
+              builder: (context, snapshot) {
+            if(snapshot.hasError){
+              return Center(child: Text(snapshot.error.toString(),style: theme.textTheme.bodyLarge?.copyWith(
+                color: Colors.black
+              ),),);
+            }
+            if(snapshot.connectionState == ConnectionState.waiting){
+              return Center(child: CircularProgressIndicator(),);
+            }
+
+            List<EventData> eventDataList = snapshot.data ?? [];
+
+           return Expanded(
+             child: ListView.separated(
+                 shrinkWrap: true,
+                 physics: NeverScrollableScrollPhysics(),
+                 itemBuilder: (context,index){
+                   return EventCardItem(
+                     eventData: eventDataList[index],
+                   );
+                 },
+                 separatorBuilder: (context,index) {
+                   return SizedBox(height: 10);
+                 },
+                 itemCount: eventDataList.length),
+           );
+              }),*/
         ],
       ),
     );

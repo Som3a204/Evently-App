@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "356570140700",
+    "project_id": "evenly-app-route-academy",
+    "storage_bucket": "evenly-app-route-academy.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:356570140700:android:0117a65e1549520018cfd9",
+        "android_client_info": {
+          "package_name": "com.example.evently_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAK1CGnhtx1Qqpkkru8ZNapAk_HOVQlYyk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

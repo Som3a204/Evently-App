@@ -12,4 +12,13 @@ abstract class Assets{
   static const String userIcn = 'assets/icons/user.png';
   static const String userActiveIcn = 'assets/icons/user_active.png';
   static const String birthdayImg = 'assets/images/birthday_img.png';
+  static const String bookClubImg = 'assets/images/Book Club.png';
+  static const String eatingImg = 'assets/images/Eating.png';
+  static const String exhibitionImg = 'assets/images/Exhibition.png';
+  static const String gamingImg = 'assets/images/Gaming.png';
+  static const String holidayImg = 'assets/images/Holiday.png';
+  static const String meetingImg = 'assets/images/Meeting.png';
+  static const String sportsImg = 'assets/images/Sports.png';
+  static const String workshopImg = 'assets/images/Workshop.png';
+  static const String noteIcn = 'assets/icons/NoteIcon.png';
 }

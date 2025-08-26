@@ -2,6 +2,7 @@ import 'package:evently_app/core/routes/page_route_name.dart';
 import 'package:evently_app/modules/authentication/pages/forget_password_view.dart';
 import 'package:evently_app/modules/authentication/pages/login_view.dart';
 import 'package:evently_app/modules/authentication/pages/register_view.dart';
+import 'package:evently_app/modules/event_creation/event_creation_view.dart';
 import 'package:evently_app/modules/layout/layout_view.dart';
 import 'package:evently_app/modules/splash/pages/splash_view.dart';
 import 'package:flutter/cupertino.dart';
@@ -33,6 +34,11 @@ static Route<dynamic> onGenerateRoute(RouteSettings settings){
     case PageRouteName.forgetPassword:
       return MaterialPageRoute(
           builder: (BuildContext _) => ForgetPasswordView(),
+          settings: settings
+      );
+    case PageRouteName.eventCreation:
+      return MaterialPageRoute(
+          builder: (BuildContext _) => EventCreationView(),
           settings: settings
       );
     default:

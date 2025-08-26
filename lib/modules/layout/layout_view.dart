@@ -1,4 +1,5 @@
 import 'package:evently_app/core/constants/assets.dart';
+import 'package:evently_app/core/routes/page_route_name.dart';
 import 'package:evently_app/core/theme/color_pallette.dart';
 import 'package:evently_app/modules/layout/profile/profile_view.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +30,9 @@ class _LayoutViewState extends State<LayoutView> {
       body: screens[selectedIndex],
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: InkWell(
-        onTap: () {},
+        onTap: () {
+          Navigator.pushNamed(context, PageRouteName.eventCreation);
+        },
         child: CircleAvatar(
           radius: 32,
           backgroundColor: Colors.white,

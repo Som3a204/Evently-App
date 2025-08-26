@@ -12,6 +12,9 @@ class CustomTextFormField extends StatefulWidget {
     this.onChanged,
     this.onFieldSubmitted,
     this.isPassword = false,
+    this.maxLines = 1,
+    this.minLines,
+    this.validator
   });
   final Widget? prefixIcon;
   final String? hintText;
@@ -19,6 +22,9 @@ class CustomTextFormField extends StatefulWidget {
   final void Function(String)? onChanged;
   final void Function(String)? onFieldSubmitted;
   final bool isPassword;
+  final int? maxLines;
+  final int? minLines;
+  final String? Function(String?)? validator;
 
   @override
   State<CustomTextFormField> createState() => _CustomTextFormFieldState();
@@ -32,6 +38,9 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
       controller: widget.controller,
       obscureText: widget.isPassword ? obscureText : false,
       onChanged: widget.onChanged,
+      maxLines: widget.maxLines,
+      minLines: widget.minLines,
+      validator: widget.validator,
       onFieldSubmitted: widget.onFieldSubmitted,
       decoration: InputDecoration(
         hintText: widget.hintText,
@@ -41,15 +50,20 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
           color: ColorPallette.textFormFieldBorderColor,
         ),
         prefixIcon: widget.prefixIcon,
-        suffixIcon: widget.isPassword ? GestureDetector(
-          onTap: () {
-            setState(() {
-              obscureText = !obscureText;
-            });
-          },
-          child: Icon(obscureText ? Icons.visibility_off : Icons.visibility,
-            color: ColorPallette.textFormFieldBorderColor,),
-        ): null,
+        suffixIcon:
+            widget.isPassword
+                ? GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      obscureText = !obscureText;
+                    });
+                  },
+                  child: Icon(
+                    obscureText ? Icons.visibility_off : Icons.visibility,
+                    color: ColorPallette.textFormFieldBorderColor,
+                  ),
+                )
+                : null,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
           borderSide: BorderSide(

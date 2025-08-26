@@ -1,10 +1,15 @@
 import 'package:evently_app/core/theme/color_pallette.dart';
+import 'package:evently_app/core/utils/firebase_firestore_utils.dart';
+import 'package:evently_app/models/event_data.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bounceable/flutter_bounceable.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../core/constants/assets.dart';
 
 class EventCardItem extends StatelessWidget {
-  const EventCardItem({super.key});
+  final EventData eventData;
+  const EventCardItem({super.key, required this.eventData});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +22,7 @@ class EventCardItem extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: ColorPallette.primaryColor),
-        image: DecorationImage(image: AssetImage(Assets.birthdayImg),fit: BoxFit.cover)
+        image: DecorationImage(image: AssetImage(eventData.eventCategoryImg),fit: BoxFit.cover)
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -31,9 +36,9 @@ class EventCardItem extends StatelessWidget {
               color: Colors.white,
               borderRadius: BorderRadius.circular(6)
             ),
-            child: Text("22 Nov",
+            child: Text(DateFormat("dd MMM").format(eventData.selectedDate),
               style: theme.textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.w700,
+                fontWeight: FontWeight.w600,
                 color: ColorPallette.primaryColor,
                 height: 1
               ),
@@ -51,7 +56,7 @@ class EventCardItem extends StatelessWidget {
             child: Row(
               children: [
                 Expanded(
-                  child: Text("Meeting for updating the development method",
+                  child: Text(eventData.eventTitle,
                     style: theme.textTheme.bodyLarge?.copyWith(
                         fontWeight: FontWeight.w700,
                         color: Colors.black,
@@ -59,7 +64,17 @@ class EventCardItem extends StatelessWidget {
                     ),
                     textAlign: TextAlign.start,),
                 ),
-                Icon(Icons.favorite_border, color: ColorPallette.primaryColor,)
+                Bounceable(
+                  onTap: () {
+                    eventData.isFavorite = !eventData.isFavorite;
+                    FirebaseFirestoreUtils.updateEventTask(
+                        eventData: eventData);
+                  },
+                  child: Icon(eventData.isFavorite?
+                  Icons.favorite :
+                  Icons.favorite_border,
+                    color: ColorPallette.primaryColor,),
+                )
               ],
             ),
           )
