@@ -7,6 +7,8 @@ class EventData {
   String eventCategoryId;
   bool isFavorite;
   DateTime selectedDate;
+  double? lat;
+  double? long;
 
   EventData({
     this.eventId,
@@ -16,10 +18,14 @@ class EventData {
     required this.eventCategoryId,
     this.isFavorite = false,
     required this.selectedDate,
+    this.lat = 0,
+    this.long = 0
   });
   factory EventData.fromFireStore(Map<String,dynamic> data){
     return EventData(
       eventId: data["eventId"],
+      lat: data["lat"],
+      long: data["long"],
       eventTitle: data["eventTitle"],
       eventDescription: data["eventDescription"],
       eventCategoryImg: data["eventCategoryImg"],
@@ -31,6 +37,8 @@ class EventData {
   Map<String, dynamic> toFireStore(){
     return {
       "eventId": eventId,
+      "lat": lat,
+      "long": long,
       "eventTitle": eventTitle,
       "eventDescription": eventDescription,
       "eventCategoryImg": eventCategoryImg,

@@ -60,4 +60,5 @@ abstract class FirebaseFirestoreUtils {
     var docRef = collectionRef.doc(eventData.eventId);
     return docRef.delete();
   }
+
 }

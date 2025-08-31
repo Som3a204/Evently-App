@@ -21,4 +21,10 @@ abstract class Assets{
   static const String sportsImg = 'assets/images/Sports.png';
   static const String workshopImg = 'assets/images/Workshop.png';
   static const String noteIcn = 'assets/icons/NoteIcon.png';
+  static const String profileImg = 'assets/images/profile_image.png';
+  static const String forgetPasswordImg = 'assets/images/forget_password_img.png';
+  static const String onBoarding1 = 'assets/images/onBoarding1.png';
+  static const String onBoarding2 = 'assets/images/onBoarding2.png';
+  static const String onBoarding3 = 'assets/images/onBoarding3.png';
+  static const String onBoardingHeader = 'assets/images/onBoarding_header.png';
 }

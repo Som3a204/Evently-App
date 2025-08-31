@@ -1,3 +1,4 @@
+import 'package:evently_app/core/routes/page_route_name.dart';
 import 'package:evently_app/core/theme/color_pallette.dart';
 import 'package:evently_app/core/utils/firebase_firestore_utils.dart';
 import 'package:evently_app/models/category_data.dart';
@@ -5,6 +6,7 @@ import 'package:evently_app/models/event_data.dart';
 import 'package:evently_app/modules/layout/home/widgets/event_card_item.dart';
 import 'package:evently_app/modules/layout/home/widgets/tab_bar_item_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bounceable/flutter_bounceable.dart';
 
 import '../../../core/constants/assets.dart';
 
@@ -111,7 +113,7 @@ class _HomeViewState extends State<HomeView> {
                             style: theme.textTheme.bodyLarge,
                           ),
                           Text(
-                            "Hossam",
+                            "Ismaeil Sherif",
                             style: theme.textTheme.headlineSmall?.copyWith(
                               color: Colors.white,
                               fontWeight: FontWeight.w700,
@@ -215,20 +217,30 @@ class _HomeViewState extends State<HomeView> {
                     return element.data();
                   }).toList();
 
-              return eventDataList.isEmpty ?
-              Center(child: Text("No Data"),): Expanded(
-                child: ListView.separated(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    return EventCardItem(eventData: eventDataList[index]);
-                  },
-                  separatorBuilder: (context, index) {
-                    return SizedBox(height: 10);
-                  },
-                  itemCount: eventDataList.length,
-                ),
-              );
+              return eventDataList.isEmpty
+                  ? Center(child: Text("No Data"))
+                  : Expanded(
+                    child: ListView.separated(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        return Bounceable(
+                          onTap: () {
+                            Navigator.pushNamed(
+                              context,
+                              PageRouteName.eventDetails,
+                              arguments: eventDataList[index],
+                            );
+                          },
+                          child: EventCardItem(eventData: eventDataList[index]),
+                        );
+                      },
+                      separatorBuilder: (context, index) {
+                        return SizedBox(height: 10);
+                      },
+                      itemCount: eventDataList.length,
+                    ),
+                  );
             },
           ),
 

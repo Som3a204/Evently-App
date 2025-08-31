@@ -17,15 +17,16 @@ import 'package:provider/provider.dart';
 
 import '../../models/category_data.dart';
 
-class EventCreationView extends StatefulWidget {
-  const EventCreationView({super.key});
-
+class EditEventView extends StatefulWidget {
+   EditEventView({super.key,required this.eventData});
+  EventData eventData;
   @override
-  State<EventCreationView> createState() => _EventCreationViewState();
+  State<EditEventView> createState() => _EditEventViewState();
 }
 
 
-class _EventCreationViewState extends State<EventCreationView> {
+class _EditEventViewState extends State<EditEventView> {
+
   int selectedTabIndex = 0;
   DateTime? selectedDate;
   late AppProvider appProvider;
@@ -87,19 +88,22 @@ class _EventCreationViewState extends State<EventCreationView> {
       icon: Icons.work_history_outlined,
     ),
   ];
-  final TextEditingController titleController = TextEditingController();
-  final TextEditingController descriptionController = TextEditingController();
+  late TextEditingController titleController = TextEditingController();
+  late TextEditingController descriptionController = TextEditingController();
 
   @override
   void initState() {
     appProvider = Provider.of<AppProvider>(context, listen: false);
+    titleController.text = widget.eventData.eventTitle;
+    descriptionController.text = widget.eventData.eventDescription;
     super.initState();
   }
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
+    String formattedDate = DateFormat.yMMMd().format(widget.eventData.selectedDate);
     return Scaffold(
-      appBar: AppBar(title: Text("Create Event")),
+      appBar: AppBar(title: Text("Edit Event")),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: SizedBox(
         width: double.infinity,
@@ -113,37 +117,26 @@ class _EventCreationViewState extends State<EventCreationView> {
               if (formKey.currentState!.validate()) {
                 if (selectedDate != null) {
                   var eventData = EventData(
-                    eventTitle: titleController.text,
-                    eventDescription: descriptionController.text,
-                    eventCategoryImg: categoriesDataList[selectedIndex].image,
-                    eventCategoryId: categoriesDataList[selectedIndex].id,
-                    selectedDate: selectedDate!,
-                    lat: appProvider.eventLocation?.latitude ?? 0,
-                    long: appProvider.eventLocation?.longitude ?? 0
+                    eventId: widget.eventData.eventId,
+                      eventTitle: titleController.text,
+                      eventDescription: descriptionController.text,
+                      eventCategoryImg: categoriesDataList[selectedIndex].image,
+                      eventCategoryId: categoriesDataList[selectedIndex].id,
+                      selectedDate: selectedDate ?? widget.eventData.selectedDate,
+                      lat: appProvider.eventLocation?.latitude ?? widget.eventData.lat,
+                      long: appProvider.eventLocation?.longitude ?? widget.eventData.long
                   );
                   EasyLoading.show();
 
-                  FirebaseFirestoreUtils.createNewEventTask(eventData).then((
-                    bool value,
-                  ) {
-                    Future.delayed(Duration(seconds: 4), () {
-                      EasyLoading.dismiss();
-                      if (value) {
-                        Navigator.pop(context);
-                        SnackBarService.showSuccessMessage(
-                          "Event has been created successfully",
-                        );
-                      } else {
-                        SnackBarService.showErrorMessage(
-                          "Something went wrong",
-                        );
-                      }
-                    });
-                  });
+                  FirebaseFirestoreUtils.updateEventTask(eventData: eventData);
+                  SnackBarService.showSuccessMessage("Event Updated Successfully");
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                  EasyLoading.dismiss();
                 }
               }
             },
-            child: Text("Add Event", style: theme.textTheme.titleSmall),
+            child: Text("Edit Event", style: theme.textTheme.titleSmall),
           ),
         ),
       ),
@@ -179,14 +172,14 @@ class _EventCreationViewState extends State<EventCreationView> {
                       });
                     },
                     tabs:
-                        categoriesDataList.map((data) {
-                          return CreateEventTabBarItemWidget(
-                            categoryData: data,
-                            isSelected:
-                                selectedTabIndex ==
-                                categoriesDataList.indexOf(data),
-                          );
-                        }).toList(),
+                    categoriesDataList.map((data) {
+                      return CreateEventTabBarItemWidget(
+                        categoryData: data,
+                        isSelected:
+                        selectedTabIndex ==
+                            categoriesDataList.indexOf(data),
+                      );
+                    }).toList(),
                   ),
                 ),
                 SizedBox(height: 15),
@@ -209,7 +202,7 @@ class _EventCreationViewState extends State<EventCreationView> {
                     padding: const EdgeInsets.all(10.0),
                     child: ImageIcon(AssetImage(Assets.noteIcn)),
                   ),
-                  hintText: "Event Title",
+                  hintText: widget.eventData.eventTitle,
                 ),
                 SizedBox(height: 15),
                 Text(
@@ -227,7 +220,7 @@ class _EventCreationViewState extends State<EventCreationView> {
                     return null;
                   },
                   controller: descriptionController,
-                  hintText: "Event Description",
+                  hintText: widget.eventData.eventDescription,
                   maxLines: 4,
                 ),
                 SizedBox(height: 15),
@@ -248,10 +241,10 @@ class _EventCreationViewState extends State<EventCreationView> {
                       },
                       child: Text(
                         selectedDate == null
-                            ? "Choose Date"
+                            ?  formattedDate
                             : DateFormat(
-                              "yyyy-MM-dd",
-                            ).format(selectedDate!).toString(),
+                          "yyyy-MM-dd",
+                        ).format(selectedDate!).toString(),
                         style: theme.textTheme.titleSmall?.copyWith(
                           color: ColorPallette.primaryColor,
                         ),
@@ -268,7 +261,7 @@ class _EventCreationViewState extends State<EventCreationView> {
                 ),
                 SizedBox(height: 10),
                 Consumer<AppProvider>(
-                    builder: (context,provider,child) => CustomButtonWidget(
+                  builder: (context,provider,child) => CustomButtonWidget(
                     onTap: () {
                       Navigator.of(
                         context,
@@ -293,7 +286,7 @@ class _EventCreationViewState extends State<EventCreationView> {
                           ),
                           SizedBox(width: 25),
                           Text( appProvider.eventLocation== null ?
-                            "Choose Event Location" : "Location : ${appProvider.eventLocation!.latitude.toString()}, ${appProvider.eventLocation!.longitude.toString()}",
+                          "Location: ${widget.eventData.lat}, ${widget.eventData.long}" : "Location : ${appProvider.eventLocation!.latitude.toString()}, ${appProvider.eventLocation!.longitude.toString()}",
                             style: theme.textTheme.titleSmall?.copyWith(
                               color: ColorPallette.primaryColor,
                             ),
