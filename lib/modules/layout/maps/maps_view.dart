@@ -20,12 +20,10 @@ class _MapsViewState extends State<MapsView> {
      AppProvider appProvider = Provider.of<AppProvider>(context, listen: false);
     appProvider.getLocation();
     appProvider.setLocationListener();
-    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-
     var theme = Theme.of(context);
     return Scaffold(
       floatingActionButton: FloatingActionButton(

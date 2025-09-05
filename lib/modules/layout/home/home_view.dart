@@ -219,27 +219,25 @@ class _HomeViewState extends State<HomeView> {
 
               return eventDataList.isEmpty
                   ? Center(child: Text("No Data"))
-                  : Expanded(
-                    child: ListView.separated(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemBuilder: (context, index) {
-                        return Bounceable(
-                          onTap: () {
-                            Navigator.pushNamed(
-                              context,
-                              PageRouteName.eventDetails,
-                              arguments: eventDataList[index],
-                            );
-                          },
-                          child: EventCardItem(eventData: eventDataList[index]),
-                        );
-                      },
-                      separatorBuilder: (context, index) {
-                        return SizedBox(height: 10);
-                      },
-                      itemCount: eventDataList.length,
-                    ),
+                  : ListView.separated(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      return Bounceable(
+                        onTap: () {
+                          Navigator.pushNamed(
+                            context,
+                            PageRouteName.eventDetails,
+                            arguments: eventDataList[index],
+                          );
+                        },
+                        child: EventCardItem(eventData: eventDataList[index]),
+                      );
+                    },
+                    separatorBuilder: (context, index) {
+                      return SizedBox(height: 10);
+                    },
+                    itemCount: eventDataList.length,
                   );
             },
           ),

@@ -93,7 +93,6 @@ class _EventCreationViewState extends State<EventCreationView> {
   @override
   void initState() {
     appProvider = Provider.of<AppProvider>(context, listen: false);
-    super.initState();
   }
   @override
   Widget build(BuildContext context) {
@@ -115,8 +114,8 @@ class _EventCreationViewState extends State<EventCreationView> {
                   var eventData = EventData(
                     eventTitle: titleController.text,
                     eventDescription: descriptionController.text,
-                    eventCategoryImg: categoriesDataList[selectedIndex].image,
-                    eventCategoryId: categoriesDataList[selectedIndex].id,
+                    eventCategoryImg: categoriesDataList[selectedTabIndex].image,
+                    eventCategoryId: categoriesDataList[selectedTabIndex].id,
                     selectedDate: selectedDate!,
                     lat: appProvider.eventLocation?.latitude ?? 0,
                     long: appProvider.eventLocation?.longitude ?? 0
@@ -293,8 +292,8 @@ class _EventCreationViewState extends State<EventCreationView> {
                           ),
                           SizedBox(width: 25),
                           Text( appProvider.eventLocation== null ?
-                            "Choose Event Location" : "Location : ${appProvider.eventLocation!.latitude.toString()}, ${appProvider.eventLocation!.longitude.toString()}",
-                            style: theme.textTheme.titleSmall?.copyWith(
+                            "Choose Event Location" : "Location : \n${appProvider.eventLocation!.latitude.toString()}, \n${appProvider.eventLocation!.longitude.toString()}",
+                            style: theme.textTheme.titleMedium?.copyWith(
                               color: ColorPallette.primaryColor,
                             ),
                           ),

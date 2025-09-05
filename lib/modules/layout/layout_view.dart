@@ -2,6 +2,7 @@ import 'package:evently_app/core/constants/assets.dart';
 import 'package:evently_app/core/routes/page_route_name.dart';
 import 'package:evently_app/core/theme/color_pallette.dart';
 import 'package:evently_app/modules/layout/profile/profile_view.dart';
+import 'package:evently_app/modules/manager/app_manager.dart';
 import 'package:evently_app/modules/settings_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';

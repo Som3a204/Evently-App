@@ -120,8 +120,8 @@ class _EditEventViewState extends State<EditEventView> {
                     eventId: widget.eventData.eventId,
                       eventTitle: titleController.text,
                       eventDescription: descriptionController.text,
-                      eventCategoryImg: categoriesDataList[selectedIndex].image,
-                      eventCategoryId: categoriesDataList[selectedIndex].id,
+                      eventCategoryImg: categoriesDataList[selectedTabIndex].image,
+                      eventCategoryId: categoriesDataList[selectedTabIndex].id,
                       selectedDate: selectedDate ?? widget.eventData.selectedDate,
                       lat: appProvider.eventLocation?.latitude ?? widget.eventData.lat,
                       long: appProvider.eventLocation?.longitude ?? widget.eventData.long
@@ -286,7 +286,7 @@ class _EditEventViewState extends State<EditEventView> {
                           ),
                           SizedBox(width: 25),
                           Text( appProvider.eventLocation== null ?
-                          "Location: ${widget.eventData.lat}, ${widget.eventData.long}" : "Location : ${appProvider.eventLocation!.latitude.toString()}, ${appProvider.eventLocation!.longitude.toString()}",
+                          "Location: \n${widget.eventData.lat}, \n${widget.eventData.long}" : "Location : \n${appProvider.eventLocation!.latitude.toString()}, \n${appProvider.eventLocation!.longitude.toString()}",
                             style: theme.textTheme.titleSmall?.copyWith(
                               color: ColorPallette.primaryColor,
                             ),

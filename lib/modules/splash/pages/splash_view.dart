@@ -13,9 +13,6 @@ class SplashView extends StatefulWidget {
 class _SplashViewState extends State<SplashView> {
   @override
   void initState() {
-    Future.delayed(Duration(seconds: 3), () {
-      Navigator.pushReplacementNamed(context, PageRouteName.login);
-    });
     super.initState();
   }
   @override

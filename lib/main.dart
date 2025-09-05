@@ -25,9 +25,15 @@ options: DefaultFirebaseOptions.currentPlatform
   await LocalStorageServices.init();
   var isFirstTime = await LocalStorageServices.getBool("firstTime") ?? true;
   runApp(
-      ChangeNotifierProvider(
-    create: (context) => SettingsProvider(),
-      child: MyApp(isFirstTime: isFirstTime,)));
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (_) => AppProvider())
+        ],
+        child: ChangeNotifierProvider(
+            create: (context) => SettingsProvider(),
+            child: MyApp(isFirstTime: isFirstTime,)),
+      ),
+      );
   configLoading();
 }
 
@@ -38,7 +44,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var provider = Provider.of<SettingsProvider>(context);
-
     return MaterialApp(
       themeMode: provider.currentTheme,
       theme: AppThemeManager.lightTheme,

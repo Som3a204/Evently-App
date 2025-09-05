@@ -16,23 +16,20 @@ class _EventLocationCardState extends State<EventLocationCard> {
   @override
   void initState() {
     _getLocation();
-    super.initState();
   }
   Future<void> _getLocation() async{
     List<Placemark> placemarks = await placemarkFromCoordinates(widget.lat, widget.long);
     try {
       if(placemarks.isNotEmpty){
         Placemark placemark = placemarks[0];
-        locationMessage = "${placemark.country}, ${placemark.locality}";
+        locationMessage = '${placemark.country}, ${placemark.locality}';
         setState(() {
-
         });
       }
       else{
-        locationMessage = "Location not found";
         setState(() {
-
         });
+        locationMessage = 'Location not found';
       }
     } catch (e) {
       locationMessage = '$e';
@@ -63,7 +60,9 @@ class _EventLocationCardState extends State<EventLocationCard> {
             Expanded(child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(locationMessage, style: theme.textTheme.titleSmall),
+                Text(locationMessage, style: theme.textTheme.titleSmall!.copyWith(
+                  color: ColorPallette.primaryColor
+                )),
               ],
             ))
           ],

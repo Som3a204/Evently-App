@@ -24,8 +24,8 @@ class EventData {
   factory EventData.fromFireStore(Map<String,dynamic> data){
     return EventData(
       eventId: data["eventId"],
-      lat: data["lat"],
-      long: data["long"],
+      lat: data["lat"] ?? 0,
+      long: data["long"] ?? 0,
       eventTitle: data["eventTitle"],
       eventDescription: data["eventDescription"],
       eventCategoryImg: data["eventCategoryImg"],

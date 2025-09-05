@@ -37,7 +37,9 @@ class DateTimeCard extends StatelessWidget {
                 Text(formattedDate, style: theme.textTheme.titleSmall?.copyWith(
                   color: ColorPallette.primaryColor
                 )),
-                Text(formattedTime, style: theme.textTheme.titleSmall),
+                Text(formattedTime, style: theme.textTheme.titleSmall?.copyWith(
+                  color: ColorPallette.primaryColor
+                )),
               ],
             ))
           ],

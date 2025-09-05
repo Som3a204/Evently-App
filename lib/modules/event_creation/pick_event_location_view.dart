@@ -16,7 +16,6 @@ class _PickEventLocationViewState extends State<PickEventLocationView> {
 
   @override
   void initState() {
-    super.initState();
     appProvider = Provider.of<AppProvider>(context, listen: false);
     appProvider.getLocation();
   }
@@ -37,8 +36,7 @@ class _PickEventLocationViewState extends State<PickEventLocationView> {
                   onMapCreated: (mapController) {
                     provider.mapController = mapController;
                   },
-                  mapType: MapType.normal,)
-                ),
+                  mapType: MapType.normal,)),
                 Container(
                   width: double.infinity,
                   alignment: Alignment.center,
